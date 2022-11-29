@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js" integrity="sha512-YeeA/Qxn5hYdkukScTCNNOhTrv1C2RubAGButJ1rmgQwZf/HdRaCGl+JAVkqsqaNRaYNHdheiuKKuPf9mDcqKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: monospace;
+
+    }   
+         .wrap{
+            width: 100%;
+            min-height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background: rgb(248,0,255);
+background: linear-gradient(45deg, rgba(248,0,255,1) 25%, rgba(16,213,236,1) 75%);
+         }
+         .top{
+            width: 100%;
+            height: 10vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgb(228, 228, 228);
+            font-family: monospace;
+           font-weight: 600;
+           padding: 15px 3%;
+         }
+         .top__name__chat{
+            font-size: 36px;
+         }
+         .top__online{
+            min-width: 10%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+         }
+         .top__online__kolo__over{
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+         }
+         .top__online__kolo{
+            width: 30px;
+            height: 30px;
+            background-color: rgb(5, 209, 5);
+            box-shadow: 0 0 2px rgb(2, 121, 2);
+            border-radius: 50%;
+  
+            animation: pulse 1s infinite;
+         }
+         .top__online__text{
+            font-size: 24px;
+         }
+         .form{
+            width: 100%;
+            height: 12vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 3%;
+         }
+         .message_info{
+            width: 88%;
+            height: 100%;
+            background-color: rgb(228, 228, 228);
+            font-size: 28px;
+            border: none;
+            border-radius: 15px;
+            outline: none;
+            padding-left: 10px;
+         }
+         .btn{
+            width: 10%;
+            height: 100%;
+            color: white;
+            background-color: rgb(5, 209, 5);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            padding: none;
+
+         }
+         .main{
+            width: 100%;
+            min-height: 78vh;
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+            padding: 0 3%;
+            padding-top: 10px;
+            font-weight: 500;
+         }  
+         .main__block__yourMessage{
+            width: 50%;
+            min-height: 30px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+       position: relative;
+       left: 50%;
+            margin: 5px 0;
+            
+
+         }
+         .main__yourMessage{
+            padding: 5px;
+            /* padding-top: 20px; */
+            height: 100%;
+            border-radius: 10px;
+            background-color: rgb(118,106,200);
+            color: white;
+         }
+         .main__block__yourMessage__name{
+            position: relative;
+            font-size: 12px;
+            color: black;
+            /* margin-top: 3px;
+            margin-right: 5px; */
+         }
+         .main__block__anotherMessage{
+            width: 50%;
+            min-height: 30px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin: 5px 0;
+
+         }
+         .main__anotherMessage{
+            padding: 5px;
+            /* padding-top: 20px; */
+            height: 100%;
+            border-radius: 10px;
+            background-color: rgb(62, 62, 62);
+            color: white;
+         }
+         .main__block__anotherMessage__name{
+            position: relative;
+            font-size: 12px;
+            color: lightblue;
+            /* margin-top: 3px;
+            margin-left: 5px; */
+           
+         }
+         .load__menu{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 30vh 20%;
+            
+         }
+         .load__menu__form__yourName{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+
+         }
+         .load__menu__form__yourName__text{
+            font-size: 36px;
+            font-weight: 600;
+         }
+         .load__menu__form__yourName__inp{
+            width: 100%;
+            height: 40px;
+            background-color: rgb(228, 228, 228);
+            font-size: 28px;
+            border: none;
+            border-radius: 15px;
+            outline: none;
+            padding-left: 10px;
+         }
+   
+         .load__menu__form__yourName__btn{
+            width: 40%;
+            font-size: 32px;
+            height: 40px;
+            color: white;
+            background-color: rgb(5, 209, 5);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            padding: none;
+            border: 2px solid black;
+
+         }
+         @keyframes pulse{
+            0%{
+                width: 30px;
+            height: 30px; 
+            }
+            65%{
+                width: 20px;
+            height: 20px;   
+            }
+            100%{
+                width: 30px;
+            height: 30px;   
+            }
+         }
+         @media screen and (max-width:900px){
+            .top__name__chat{
+                font-size: 16px;
+            }
+            .btn{
+                font-size: 14px;
+                width: 15%;
+            }
+            .message_info{
+                width: 83%;
+            }
+         }
+         @media screen and (max-width:450px){
+.top__online__text{
+    font-size: 16px;
+}
+.btn{
+       font-size: 10px;
+            }
+         }
+    </style>
+</head>
+<body>
+   <div class="load__menu">
+    <div class="load__menu__form__yourName">
+        <div class="load__menu__form__yourName__text">Введи своє ім'я</div>
+       <input placeholder="Введи своє ім'я" type="text" class="load__menu__form__yourName__inp" id="load__menu__form__yourName__inp"> 
+       <button class="load__menu__form__yourName__btn">Зайти</button>
+    </div>
+   </div>
+<div class="wrap">
+    <div class="top">
+        <div class="top__name__chat">Top chat in the world</div>
+        <div class="top__online">
+            <div class="top__online__kolo__over">
+                <div class="top__online__kolo"></div>
+            </div>
+        
+            <div class="top__online__text">Online: 0</div>
+        </div>
+    </div>
+    <div class="main">
+        <!-- Your meassage -->
+        <!-- <div class="main__block__yourMessage">
+     
+            <div class="main__yourMessage">
+                <div class="main__block__yourMessage__name">Geniu</div>
+            sdgdg Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et, deserunt. Culpa odio accusantium tenetur sint qui facilis facere modi aliquam veritatis a! Corrupti molestias blanditiis aut dolore excepturi rem at!</div>
+        </div> -->
+        <!-- Friend meassage -->
+        <!-- <div class="main__block__anotherMessage">
+            <div class="main__anotherMessage">           
+                <div class="main__block__anotherMessage__name">Aboba</div>
+            a</div>
+        </div> -->
+ 
+    </div>
+    <div id="form" class="form">
+        <input class="message_info" type="text" placeholder="Введи повідомлення" id="message_info">
+        <button class="btn">Відправити</button>
+    </div>
+</div>
+
+
+
+    <script>
+        
+        let col1='rgb('+Math.round(Math.random()*255) +','+Math.round(Math.random()*255) +','+ Math.round(Math.random()*255)+')'
+        let col2='rgb('+Math.round(Math.random()*255) +','+Math.round(Math.random()*255) +','+ Math.round(Math.random()*255)+')'
+        let ranNum1=Math.floor(Math.random()*100)
+        console.log(100-ranNum1)
+        let ranNum2=Math.floor(Math.random()*(100-ranNum1))
+        let randeg=Math.round(Math.random()*360)
+        console.log(ranNum1,ranNum2)
+        ranNum1=ranNum1+'%'
+        ranNum2=100-ranNum2+'%'
+        // $('.form').css('background',col1)
+        $('.load__menu').css('background','linear-gradient('+randeg+'deg, '+col1+' '+ranNum1+', '+col2+' '+ranNum2+')')
+        $('.wrap').css('background','linear-gradient('+randeg+'deg, '+col1+' '+ranNum1+', '+col2+' '+ranNum2+')')
+        let socket = io();
+
+
+        let yName=''
+
+        $('.load__menu__form__yourName__btn').click(function(){
+            if(load__menu__form__yourName__inp.value.length>0){
+                $('.wrap').css('display','flex')
+                yName=load__menu__form__yourName__inp.value
+            $('.load__menu').css('display','none')
+            // socket.emit('new user',load__menu__form__yourName__inp.value)
+            }
+  
+        })
+        $('.btn').click(function(){
+            if($('#message_info').val().length>0){
+                socket.emit('chat message', $('#message_info').val());
+                socket.emit('new user',yName)
+            $('.main').append('<div class="main__block__yourMessage">  <div class="main__yourMessage"><div class="main__block__yourMessage__name">'+yName+'</div>'+ $('#message_info').val()+'</div></div>')
+            // message_info.value=''
+
+            return false;
+            }
+ 
+        });
+        let nP=''
+        socket.on('new user',function(user){
+            console.log(user)
+            nP=user
+        })
+        socket.on('chat message',function(data){
+            console.log(data)
+            socket.on('new user',function(user){
+            nP=user
+            console.log(nP)
+        })
+        setTimeout(function(){
+            if(message_info.value!=data){
+                // socket.on('new user',function(user){
+                    $('.main').append('<div class="main__block__anotherMessage"><div class="main__anotherMessage"><div class="main__block__anotherMessage__name">'+nP+'</div>'+ data+'</div></div>')
+                // })
+                
+            }else{
+                message_info.value=''
+            }
+        },100)
+  
+           
+        })
+        socket.on('getStatus',function(data){
+            console.log(data,'gt')
+            $('.top__online__text').html('Онлайн: '+data)
+        })
+        
+    </script>
+</body>
+</html>
