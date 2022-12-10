@@ -1,6 +1,6 @@
 let app = require('express')();
 let http = require('http').createServer(app);
-let PORT = 3000;
+let PORT = 80;
 let io =  require('socket.io')(http);
 let userCount=0
 app.get('/', function(req, res){

@@ -36,6 +36,8 @@ background: linear-gradient(45deg, rgba(248,0,255,1) 25%, rgba(16,213,236,1) 75%
             font-family: monospace;
            font-weight: 600;
            padding: 15px 3%;
+           position: fixed;
+           z-index: 5;
          }
          .top__name__chat{
             font-size: 36px;
@@ -74,6 +76,8 @@ background: linear-gradient(45deg, rgba(248,0,255,1) 25%, rgba(16,213,236,1) 75%
             justify-content: space-between;
             align-items: center;
             padding: 15px 3%;
+            position: fixed;
+            bottom: 0;
          }
          .message_info{
             width: 88%;
@@ -102,9 +106,10 @@ background: linear-gradient(45deg, rgba(248,0,255,1) 25%, rgba(16,213,236,1) 75%
             display: flex;
             flex-direction: column;
             font-size: 16px;
-            padding: 0 3%;
-            padding-top: 10px;
+            padding: 12vh 3%;
+            padding-top: 12vh;
             font-weight: 500;
+          
          }  
          .main__block__yourMessage{
             width: 50%;
@@ -323,6 +328,19 @@ background: linear-gradient(45deg, rgba(248,0,255,1) 25%, rgba(16,213,236,1) 75%
             }
  
         });
+        document.body.onkeydown = function(e){
+            console.log(e.keyCode)
+            if(e.keyCode==13){
+                if($('#message_info').val().length>0){
+                socket.emit('chat message', $('#message_info').val());
+                socket.emit('new user',yName)
+            $('.main').append('<div class="main__block__yourMessage">  <div class="main__yourMessage"><div class="main__block__yourMessage__name">'+yName+'</div>'+ $('#message_info').val()+'</div></div>')
+            // message_info.value=''
+
+            return false;
+            }
+            }
+        }
         let nP=''
         socket.on('new user',function(user){
             console.log(user)
